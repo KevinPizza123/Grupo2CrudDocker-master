@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    image: grupo2backend:1
+    ports:
+      - target: 8082
+        published: 8082
+        protocol: tcp
+        mode: host
+    networks:
+      - desarrollo_grupodos
+  db2:
+    image: postgres:15.0-bullseye
+    environment:
+      - TZ=America/Guayaquil
+      - POSTGRES_DB=grupodoscrud
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pg_tendencia_grupodos:/var/lib/postgresql/data/pgdata
+    networks:
+      - desarrollo_grupodos
+           
+volumes:
+  pg_tendencia_grupodos:
+    external: true
+
+networks:
+  desarrollo_grupodos:
+    external: true
+
+secrets:
+  db_dev_pass:
+    external: true  
