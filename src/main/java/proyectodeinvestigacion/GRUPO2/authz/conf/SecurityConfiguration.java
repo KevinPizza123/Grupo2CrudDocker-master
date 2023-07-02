@@ -23,17 +23,16 @@ public class SecurityConfiguration{
 	@Bean                                                     
 	public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
-		http.csrf().disable()
-		.authorizeHttpRequests((authorize) -> authorize
-		
-				.requestMatchers("/login").permitAll()
-				.requestMatchers("/swagger-ui/*").permitAll()
-				.requestMatchers("/v3/api-docs").permitAll()
-				.requestMatchers("/v3/api-docs/*").permitAll()
-				.requestMatchers("/v3/*").permitAll()
-				.anyRequest().authenticated()
-		);
-		
+		http
+				.csrf().disable()
+				.authorizeHttpRequests((authorize) -> authorize
+						.requestMatchers("/login").permitAll()
+						.requestMatchers("/swagger-ui/*").permitAll()
+						.requestMatchers("/v3/api-docs").permitAll()
+						.requestMatchers("/v3/api-docs/*").permitAll()
+						.requestMatchers("/v3/*").permitAll()
+						.anyRequest().authenticated()
+				);
 		http.addFilterBefore(new JWTAuthenticationFilter(userService), BasicAuthenticationFilter.class);
 		http.addFilterAfter(new JWTAuthorizationFilter(userService),BasicAuthenticationFilter.class);
 		return http.build();
